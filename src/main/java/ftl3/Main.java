@@ -31,7 +31,7 @@ public class Main {
         excelCreator.createHeaderRow(headers);
         excelCreator.addRows(persons);
         excelCreator.writeToFile(randString());
-
+        //TODO: сделать вывод имени файла и добавить README
         System.out.println();
     }
 }
