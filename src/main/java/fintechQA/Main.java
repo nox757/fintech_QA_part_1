@@ -1,5 +1,11 @@
 package fintechQA;
 
+import fintechQA.gen.RandomPersonEntityGenerator;
+import fintechQA.gen.RandomUtilsGenerator;
+import fintechQA.gen.RandomUtilsGeneratorImpl;
+import fintechQA.model.Person;
+import fintechQA.converter.ConverterToList;
+import fintechQA.converter.PersonConverterToListImp;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.io.IOException;
@@ -7,30 +13,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static fintechQA.RandomUtilsGenerator.randString;
-
 public class Main {
 
     public static List<String> headers = new ArrayList<>(Arrays.asList("Фамилия",
             "Имя", "Отчество", "Возраст", "Пол", "Дата рождения", "Инн",
             "Почтовый индекс", "Страна", "Область", "Город", "Улица", "Дом", "Квартира"));
 
-
-
     public static void main(String[] args) throws IOException {
 
-        RandomUtilsGenerator randomUtilsGenerator = new RandomUtilsGenerator();
+        RandomUtilsGenerator randomUtilsGenerator = new RandomUtilsGeneratorImpl();
         randomUtilsGenerator.fillResources();
-        RandomPersonGenerator personGenerator = new RandomPersonGenerator(randomUtilsGenerator);
+
+        RandomPersonEntityGenerator personGenerator = new RandomPersonEntityGenerator(randomUtilsGenerator);
         List<Person> persons = new ArrayList<>();
         int numRow = RandomUtils.nextInt(1,30);
         for (int i = 0; i < numRow; i++) {
             persons.add(personGenerator.generate());
         }
         ExcelCreator excelCreator = new ExcelCreator("new");
+        ConverterToList<Person, String> converterToList = new PersonConverterToListImp();
         excelCreator.createHeaderRow(headers);
-        excelCreator.addRows(persons);
-        excelCreator.writeToFile(randString());
+        for (Person person : persons) {
+            excelCreator.addRow(converterToList.getListString(person));
+        }
+        excelCreator.writeToFile(randomUtilsGenerator.randString());
         //TODO: сделать вывод имени файла и добавить README
         System.out.println();
     }

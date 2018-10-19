@@ -1,4 +1,4 @@
-package fintechQA;
+package fintechQA.gen.sources;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -11,15 +11,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FileResource {
+public class LoaderFileResource {
 
-    public static List<String> getList(String fileName) {
+    public static List<String> loadResource(String fileName) {
         List<String> list = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(ClassLoader.getSystemResource(fileName).toURI()))) {
             list = stream
                     .filter(StringUtils::isNotBlank)
                     .collect(Collectors.toList());
-
         } catch (URISyntaxException | IOException ex) {
             ex.printStackTrace();
         }

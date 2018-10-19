@@ -1,4 +1,4 @@
-package fintechQA;
+package fintechQA.gen.sources;
 
 public enum ResourcePath {
 

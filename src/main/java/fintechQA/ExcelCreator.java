@@ -1,5 +1,6 @@
 package fintechQA;
 
+import fintechQA.model.Person;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,29 +23,21 @@ public class ExcelCreator {
     }
 
     public void createHeaderRow(List<String> headers) {
-        Row headerRow = sheet.createRow(0);
+        Row headerRow = sheet.createRow(rowNum++);
         for (int i = 0; i < headers.size(); i++) {
             Cell cell = headerRow.createCell(i);
             cell.setCellValue(headers.get(i));
         }
     }
 
-    public void addRows(List<Person> persons) {
-        for (Person person : persons) {
-            Row row = sheet.createRow(rowNum++);
-            row.createCell(0).setCellValue(person.getSurname());
-            row.createCell(1).setCellValue(person.getName());
-            row.createCell(2).setCellValue(person.getMiddleName());
-            row.createCell(3).setCellValue(person.getAge());
-            row.createCell(4).setCellValue(person.getGender());
-            row.createCell(5).setCellValue(person.getBirthday().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
-            row.createCell(6).setCellValue(person.getInn());
-            row.createCell(7).setCellValue(person.getPostCode());
-            row.createCell(8).setCellValue(person.getCountry());
-            row.createCell(9).setCellValue(person.getRegion());
-            row.createCell(10).setCellValue(person.getCity());
-            row.createCell(11).setCellValue(person.getNumHouse());
-            row.createCell(12).setCellValue(person.getNumFlat());
+    public void addRow(List<String> cells) {
+        if (cells == null) {
+            // todo: create execption
+            return;
+        }
+        Row row = sheet.createRow(rowNum++);
+        for (int i = 0; i < cells.size(); i++) {
+            row.createCell(i).setCellValue(cells.get(i));
         }
     }
 

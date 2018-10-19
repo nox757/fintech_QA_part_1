@@ -1,31 +1,24 @@
-package fintechQA;
+package fintechQA.gen;
 
+import fintechQA.model.Person;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.time.LocalDate;
 
-public class RandomPersonGenerator {
+public class RandomPersonEntityGenerator extends RandomEntityGenerator<Person> {
 
-    private RandomUtilsGenerator rdUtils;
-
-    public RandomPersonGenerator(RandomUtilsGenerator rdUtils) {
-        this.rdUtils = rdUtils;
+    public RandomPersonEntityGenerator(RandomUtilsGenerator rdUtils) {
+        super(rdUtils);
     }
 
     public Person generate() {
         Person person = new Person();
         person.setGender(genereteGender());
         fillNames(person);
-        person.setCountry(rdUtils.randCountry())
-                .setRegion(rdUtils.randRegion())
-                .setCity(rdUtils.randCity())
-                .setStreet(rdUtils.randStreet())
-                .setPostCode(RandomStringUtils.randomNumeric(6))
-                .setNumHouse(RandomUtils.nextInt(0, 999))
-                .setNumFlat(RandomUtils.nextInt(0,999))
-                .setInn(generateInn())
+        person.setInn(generateInn())
                 .setBirthday(LocalDate.now().minusYears(RandomUtils.nextLong(1, 100))); //TODO: сдеалть генерацию разных дат
+        person.setAddress(new RandomAdressEntityGenerator(rdUtils).generate());
         return person;
     }
 

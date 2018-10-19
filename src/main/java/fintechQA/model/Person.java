@@ -1,4 +1,4 @@
-package fintechQA;
+package fintechQA.model;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -9,16 +9,13 @@ public class Person {
     private String name;
     private String middleName;
     private LocalDate birthday;
+//    private  GENDER gender;
+//    enum GENDER {
+//        MALE, FEMALE;
+//    }
     private String gender;
     private String inn;
-
-    private String postCode;
-    private String country;
-    private String region;
-    private String city;
-    private String street;
-    private Integer numHouse;
-    private Integer numFlat;
+    private Address address;
 
     public String getSurname() {
         return surname;
@@ -74,66 +71,12 @@ public class Person {
         return this;
     }
 
-    public String getPostCode() {
-        return postCode;
+    public Address getAddress() {
+        return address;
     }
 
-    public Person setPostCode(String postCode) {
-        this.postCode = postCode;
-        return this;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public Person setCountry(String country) {
-        this.country = country;
-        return this;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-
-    public Person setRegion(String region) {
-        this.region = region;
-        return this;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public Person setCity(String city) {
-        this.city = city;
-        return this;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public Person setStreet(String street) {
-        this.street = street;
-        return this;
-    }
-
-    public Integer getNumHouse() {
-        return numHouse;
-    }
-
-    public Person setNumHouse(Integer numHouse) {
-        this.numHouse = numHouse;
-        return this;
-    }
-
-    public Integer getNumFlat() {
-        return numFlat;
-    }
-
-    public Person setNumFlat(Integer numFlat) {
-        this.numFlat = numFlat;
+    public Person setAddress(Address address) {
+        this.address = address;
         return this;
     }
 
