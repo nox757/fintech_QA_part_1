@@ -1,28 +1,25 @@
 package fintechQA.gen;
 
 import fintechQA.model.Person;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
-import java.time.LocalDate;
+public class RandomPersonGenerator extends RandomEntityGenerator<Person> {
 
-public class RandomPersonEntityGenerator extends RandomEntityGenerator<Person> {
-
-    public RandomPersonEntityGenerator(RandomUtilsGenerator rdUtils) {
+    public RandomPersonGenerator(RandomUtilsGenerator rdUtils) {
         super(rdUtils);
     }
 
     public Person generate() {
         Person person = new Person();
-        person.setGender(genereteGender());
+        person.setGender(generateGender());
         fillNames(person);
-        person.setInn(generateInn())
-                .setBirthday(LocalDate.now().minusYears(RandomUtils.nextLong(1, 100))); //TODO: сдеалть генерацию разных дат
-        person.setAddress(new RandomAdressEntityGenerator(rdUtils).generate());
+        person.setInn(rdUtils.randInn())
+                .setBirthday(rdUtils.randBirthday());
+        person.setAddress(new RandomAdressGenerator(rdUtils).generate());
         return person;
     }
 
-    private String genereteGender() {
+    private String generateGender() {
         return RandomUtils.nextInt(0, 2) == 1 ? "М" : "Ж";
     }
 
@@ -39,10 +36,4 @@ public class RandomPersonEntityGenerator extends RandomEntityGenerator<Person> {
         }
     }
 
-    private String generateInn() {
-        String inn = "77";
-        //TODO: сделать валидную генерацию ИНН
-        inn += RandomStringUtils.randomNumeric(10);
-        return inn;
-    }
 }

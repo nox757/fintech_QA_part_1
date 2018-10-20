@@ -1,6 +1,6 @@
 package fintechQA;
 
-import fintechQA.gen.RandomPersonEntityGenerator;
+import fintechQA.gen.RandomPersonGenerator;
 import fintechQA.gen.RandomUtilsGenerator;
 import fintechQA.gen.RandomUtilsGeneratorImpl;
 import fintechQA.model.Person;
@@ -24,7 +24,7 @@ public class Main {
         RandomUtilsGenerator randomUtilsGenerator = new RandomUtilsGeneratorImpl();
         randomUtilsGenerator.fillResources();
 
-        RandomPersonEntityGenerator personGenerator = new RandomPersonEntityGenerator(randomUtilsGenerator);
+        RandomPersonGenerator personGenerator = new RandomPersonGenerator(randomUtilsGenerator);
         List<Person> persons = new ArrayList<>();
         int numRow = RandomUtils.nextInt(1,30);
         for (int i = 0; i < numRow; i++) {
@@ -36,8 +36,7 @@ public class Main {
         for (Person person : persons) {
             excelCreator.addRow(converterToList.getListString(person));
         }
-        excelCreator.writeToFile(randomUtilsGenerator.randString());
-        //TODO: сделать вывод имени файла и добавить README
-        System.out.println();
+        String path = excelCreator.writeToFile(randomUtilsGenerator.randString());
+        System.out.println(path);
     }
 }

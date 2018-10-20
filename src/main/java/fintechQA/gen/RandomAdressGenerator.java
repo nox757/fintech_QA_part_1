@@ -4,9 +4,9 @@ import fintechQA.model.Address;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
-public class RandomAdressEntityGenerator extends RandomEntityGenerator<Address> {
+public class RandomAdressGenerator extends RandomEntityGenerator<Address> {
 
-    public RandomAdressEntityGenerator(RandomUtilsGenerator rdUtils) {
+    public RandomAdressGenerator(RandomUtilsGenerator rdUtils) {
         super(rdUtils);
     }
 

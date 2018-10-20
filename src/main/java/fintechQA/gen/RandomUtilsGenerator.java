@@ -1,6 +1,8 @@
 package fintechQA.gen;
 
 
+import java.time.LocalDate;
+
 public interface RandomUtilsGenerator {
     void fillResources();
 
@@ -14,6 +16,9 @@ public interface RandomUtilsGenerator {
     String randRegion();
     String randCity();
     String randStreet();
+
+    String randInn();
+    LocalDate randBirthday();
 
     String randString();
 }
