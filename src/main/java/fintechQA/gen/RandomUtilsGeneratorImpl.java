@@ -14,7 +14,11 @@ public class RandomUtilsGeneratorImpl implements RandomUtilsGenerator {
     public static String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static final Random rd = new Random();
 
-    private Map<ResourcePath, List<String>> resources = new HashMap<>();
+    public static final Map<ResourcePath, List<String>> resources = new HashMap<>();
+
+    public RandomUtilsGeneratorImpl() {
+        fillResources();
+    }
 
     public void fillResources() {
         for (ResourcePath nameResource : ResourcePath.values()) {

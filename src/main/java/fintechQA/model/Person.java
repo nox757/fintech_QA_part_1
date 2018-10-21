@@ -9,10 +9,6 @@ public class Person {
     private String name;
     private String middleName;
     private LocalDate birthday;
-//    private  GENDER gender;
-//    enum GENDER {
-//        MALE, FEMALE;
-//    }
     private String gender;
     private String inn;
     private Address address;
@@ -82,5 +78,33 @@ public class Person {
 
     public int getAge() {
         return Period.between(birthday, LocalDate.now()).getYears();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Person person = (Person) o;
+
+        if (surname != null ? !surname.equals(person.surname) : person.surname != null) return false;
+        if (name != null ? !name.equals(person.name) : person.name != null) return false;
+        if (middleName != null ? !middleName.equals(person.middleName) : person.middleName != null) return false;
+        if (birthday != null ? !birthday.equals(person.birthday) : person.birthday != null) return false;
+        if (gender != null ? !gender.equals(person.gender) : person.gender != null) return false;
+        if (inn != null ? !inn.equals(person.inn) : person.inn != null) return false;
+        return address != null ? address.equals(person.address) : person.address == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = surname != null ? surname.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (middleName != null ? middleName.hashCode() : 0);
+        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (inn != null ? inn.hashCode() : 0);
+        result = 31 * result + (address != null ? address.hashCode() : 0);
+        return result;
     }
 }

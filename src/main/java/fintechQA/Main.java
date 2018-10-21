@@ -1,17 +1,25 @@
 package fintechQA;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParseException;
+import fintechQA.api.ServiceAPI;
+import fintechQA.api.ServiceApiException;
+import fintechQA.api.ServiceConnection;
+import fintechQA.api.parser.PersonDeserializer;
+import fintechQA.converter.ConverterToList;
+import fintechQA.converter.PersonConverterToListImp;
 import fintechQA.gen.RandomPersonGenerator;
 import fintechQA.gen.RandomUtilsGenerator;
 import fintechQA.gen.RandomUtilsGeneratorImpl;
 import fintechQA.model.Person;
-import fintechQA.converter.ConverterToList;
-import fintechQA.converter.PersonConverterToListImp;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -19,24 +27,52 @@ public class Main {
             "Имя", "Отчество", "Возраст", "Пол", "Дата рождения", "Инн",
             "Почтовый индекс", "Страна", "Область", "Город", "Улица", "Дом", "Квартира"));
 
+    public static final RandomUtilsGenerator rdUtils = new RandomUtilsGeneratorImpl();
+
     public static void main(String[] args) throws IOException {
 
-        RandomUtilsGenerator randomUtilsGenerator = new RandomUtilsGeneratorImpl();
-        randomUtilsGenerator.fillResources();
-
-        RandomPersonGenerator personGenerator = new RandomPersonGenerator(randomUtilsGenerator);
-        List<Person> persons = new ArrayList<>();
-        int numRow = RandomUtils.nextInt(1,30);
-        for (int i = 0; i < numRow; i++) {
-            persons.add(personGenerator.generate());
+        int numRow = RandomUtils.nextInt(1, 30);
+        List<Person> persons;
+        try {
+            persons = getApiPersons(numRow);
+        } catch (JsonParseException | ServiceApiException ex) {
+            System.err.println(ex.getMessage()
+                    + "\nНе удалось получить данные из АPI, файл сделан своими силами");
+            persons = getRandomPersons(numRow);
         }
+
         ExcelCreator excelCreator = new ExcelCreator("new");
         ConverterToList<Person, String> converterToList = new PersonConverterToListImp();
         excelCreator.createHeaderRow(headers);
         for (Person person : persons) {
             excelCreator.addRow(converterToList.getListString(person));
         }
-        String path = excelCreator.writeToFile(randomUtilsGenerator.randString());
+        String path = excelCreator.writeToFile(rdUtils.randString());
         System.out.println(path);
+    }
+
+    public static List<Person> getApiPersons(int num) throws ServiceApiException {
+
+        ServiceAPI serviceAPI = new ServiceConnection();
+        List<String> rowsJson = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            rowsJson.add(serviceAPI.getJson());
+        }
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(Person.class, new PersonDeserializer())
+                .create();
+        return rowsJson.stream()
+                .map(json -> gson.fromJson(json, Person.class))
+                .collect(Collectors.toList());
+    }
+
+    public static List<Person> getRandomPersons(int num) {
+
+        RandomPersonGenerator personGenerator = new RandomPersonGenerator(rdUtils);
+        List<Person> persons = new ArrayList<>();
+        for (int i = 0; i < num; i++) {
+            persons.add(personGenerator.generate());
+        }
+        return persons;
     }
 }

@@ -1,13 +1,13 @@
 package fintechQA.model;
 
 public class Address {
-    String postCode;
-    String country;
-    String region;
-    String city;
-    String street;
-    Integer numHouse;
-    Integer numFlat;
+    private String postCode;
+    private String country;
+    private String region;
+    private String city;
+    private String street;
+    private Integer numHouse;
+    private Integer numFlat;
 
     public String getPostCode() {
         return postCode;
@@ -70,5 +70,33 @@ public class Address {
     public Address setNumFlat(Integer numFlat) {
         this.numFlat = numFlat;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Address address = (Address) o;
+
+        if (postCode != null ? !postCode.equals(address.postCode) : address.postCode != null) return false;
+        if (country != null ? !country.equals(address.country) : address.country != null) return false;
+        if (region != null ? !region.equals(address.region) : address.region != null) return false;
+        if (city != null ? !city.equals(address.city) : address.city != null) return false;
+        if (street != null ? !street.equals(address.street) : address.street != null) return false;
+        if (numHouse != null ? !numHouse.equals(address.numHouse) : address.numHouse != null) return false;
+        return numFlat != null ? numFlat.equals(address.numFlat) : address.numFlat == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = postCode != null ? postCode.hashCode() : 0;
+        result = 31 * result + (country != null ? country.hashCode() : 0);
+        result = 31 * result + (region != null ? region.hashCode() : 0);
+        result = 31 * result + (city != null ? city.hashCode() : 0);
+        result = 31 * result + (street != null ? street.hashCode() : 0);
+        result = 31 * result + (numHouse != null ? numHouse.hashCode() : 0);
+        result = 31 * result + (numFlat != null ? numFlat.hashCode() : 0);
+        return result;
     }
 }
