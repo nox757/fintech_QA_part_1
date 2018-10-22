@@ -9,6 +9,8 @@ import fintechQA.api.ServiceConnection;
 import fintechQA.api.parser.PersonDeserializer;
 import fintechQA.converter.ConverterToList;
 import fintechQA.converter.PersonConverterToListImp;
+import fintechQA.db.DBException;
+import fintechQA.db.DBService;
 import fintechQA.gen.RandomPersonGenerator;
 import fintechQA.gen.RandomUtilsGenerator;
 import fintechQA.gen.RandomUtilsGeneratorImpl;
@@ -29,18 +31,34 @@ public class Main {
 
     public static final RandomUtilsGenerator rdUtils = new RandomUtilsGeneratorImpl();
 
+
     public static void main(String[] args) throws IOException {
 
         int numRow = RandomUtils.nextInt(1, 30);
         List<Person> persons;
+        DBService dbService = new DBService();
         try {
             persons = getApiPersons(numRow);
+            try {
+                for (Person person : persons) {
+                    dbService.addPerson(person);
+                }
+            } catch (DBException exWrite) {
+                System.err.println(exWrite.getMessage()
+                        + "\nНе удалось записать данные из АPI в БД");
+            }
         } catch (JsonParseException | ServiceApiException ex) {
             System.err.println(ex.getMessage()
-                    + "\nНе удалось получить данные из АPI, файл сделан своими силами");
-            persons = getRandomPersons(numRow);
-        }
+                    + "\nНе удалось получить данные из АPI");
+            try {
+                persons = dbService.getRandListPersons(numRow);
 
+            } catch (DBException exRead) {
+                System.err.println(exRead.getMessage()
+                        + "\nНе удалось получить данные из БД, файл будет создан своими силами");
+                persons = getRandomPersons(numRow);
+            }
+        }
         ExcelCreator excelCreator = new ExcelCreator("new");
         ConverterToList<Person, String> converterToList = new PersonConverterToListImp();
         excelCreator.createHeaderRow(headers);
