@@ -1,9 +1,45 @@
-**Гереция рандомных пользователей**
+**Генерация рандомных пользователей**
 
 Программа генерирует рандомное количество пользователей (от 1 до 29).
 Данные беруться из файлов папки Resource
 Полученные пользователи записываются в xls файл с рандомным именем,
 путь до файла будет выведен в консоль.
+
+**Update lecture 5** 
+Сначала программа пытается брать пользователей из api `https://randus.org/api.php`
+и записывать их в БД, если сеть недоступна берет из БД.
+При проблемах с БД из файлов.
+БД MySql настройки в классе `fintechQA.db.DBService.getMysqlConnection()`
+
+Структурура БД
+`Persons <-->> Address`
+
+` address (
+    id int auto_increment not null,
+    postcode varchar(256),
+    country varchar(256),
+    region varchar(256),
+    city varchar(256),
+    street varchar(256),
+    house int,
+    flat int,
+    primary key (id) 
+)`
+
+`persons (
+    id int auto_increment not null,
+    surname varchar(256),
+    name varchar(256),
+    middlename varchar(256),
+    birthday date,
+    gender varchar(1),
+    inn varchar(12),
+    address_id int not null,
+    foreign key (address_id) references address(id),
+    primary key (id) 
+)`
+
+
 
 **Update lecture 4** 
 Сначала программа пытается брать пользователей из api `https://randus.org/api.php`
