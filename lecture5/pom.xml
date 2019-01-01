@@ -5,8 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>fintechQA</groupId>
-    <artifactId>ft_lecture4</artifactId>
+    <artifactId>ft_lecture5</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>fintechQA</groupId>
+        <artifactId>fintech_QA_part1</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
 
     <properties>
         <sourceEncoding>UTF-8</sourceEncoding>
